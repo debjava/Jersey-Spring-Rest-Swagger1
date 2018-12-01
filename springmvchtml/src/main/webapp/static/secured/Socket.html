@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="../static/scripts/sockjs-0.3.4.min.js"></script>
+<script src="../static/scripts/stomp.js"></script>
+<script type="text/javascript">
+
+var stompClient = null;
+
+ 
+ function connect() {
+     var socket = new SockJS('/springmvchtml/hello');
+     stompClient = Stomp.over(socket);
+     stompClient.connect({}, function(frame) {
+         setConnected(true);
+         console.log('Connected: ' + frame);
+         stompClient.subscribe('/topic/greetings', function(greeting){
+             showGreeting(JSON.parse(greeting.body).content);
+         });
+     });
+ }
+ 
+ 
+ function sendName() {
+     var name = document.getElementById('name').value;
+     stompClient.send("/springmvchtml/hello", {}, JSON.stringify({ 'name': name }));
+ }
+ 
+ 
+ function showGreeting(message) {
+     var response = document.getElementById('response');
+     var p = document.createElement('p');
+     p.style.wordWrap = 'break-word';
+     p.appendChild(document.createTextNode(message));
+     response.appendChild(p);
+ }
+ 
+ /* function connect() {
+	 var url = "ws://localhost:8090/springmvchtml";
+	 var socket = new SockJS('/simplemessages');
+     stompClient = Stomp.over(socket);
+     //var client = Stomp.client(url);
+     stompClient.
+} */
+ 
+ </script>
+</head>
+<body>
+	Abra Ka Dabra
+	<div>
+		<button id="connect" onclick="connect();">Connect</button>
+		<button id="disconnect">Disconnect</button>
+	</div>
+
+	<div id="conversationDiv">
+		<label>What is your name?</label><input type="text" id="name" />
+		<button id="sendName" onclick="sendName();">Send</button>
+		<p id="response"></p>
+	</div>
+
+
+</body>
+</html>

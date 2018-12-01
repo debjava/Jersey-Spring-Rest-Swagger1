@@ -1,0 +1,11 @@
+<status>
+<groups>
+	<group name="Server Properties">
+		<properties>
+			<host.canonical.name>ERROR</host.canonical.name>
+			<host.ip>ERROR</host.ip>
+			<host.name>ERROR</host.name>
+		</properties>
+	</group>
+</groups>
+</status>
